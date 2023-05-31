@@ -9,10 +9,11 @@ import { Toast } from 'antd-mobile'
 import styles from './index.module.scss'
 import classNames from 'classnames'
 import { useState } from 'react'
-import { useHistory } from 'react-router'
+import { useHistory, useLocation } from 'react-router'
 
 export default function Login() {
   const history = useHistory()
+  const location = useLocation()
   const dispatch = useDispatch()
   const [time, setTime] = useState(0)
   const onExtraClick = async () => {
@@ -63,7 +64,13 @@ export default function Login() {
         icon: 'success',
         content: '登录成功',
       })
-      history.push('/home')
+      // history.push('/home')
+      // 回到首页或之前的页面
+      if (location.from) {
+        history.push(location.from.pathname)
+      } else {
+        history.push('/home')
+      }
     },
   })
 

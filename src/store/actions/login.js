@@ -1,5 +1,5 @@
 import request from '../../utils/request'
-import { setTokenInfo } from '../../utils/storage'
+import { removeTokenInfo, setTokenInfo } from '../../utils/storage'
 
 const sendCode = (mobile) => {
   return async (dispatch) => {
@@ -37,6 +37,23 @@ const login = (data) => {
   }
 }
 
+/**
+ * 退出
+ * @returns 
+ */
+const logout = () => {
+  return dispatch => {
+    // 移除本地的 token
+    removeTokenInfo()
+    // 移除 redux 中的 token
+    dispatch({
+      type: 'login/logout',
+    })
+  }
+}
 
 
-export { sendCode, login, saveToken }
+
+
+
+export { sendCode, login, saveToken, logout }

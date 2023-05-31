@@ -4,7 +4,7 @@ import { getTokenInfo } from './storage'
 // import { config } from 'antd-mobile/es/components/toast/methods'
 
 const instance = axios.create({
-  timeout: 5000,
+  timeout: 50000,
   baseURL: 'http://geek.itheima.net/v1_0/',
 })
 
@@ -15,7 +15,8 @@ instance.interceptors.request.use(
     // 获取 token
     const token = getTokenInfo().token
     if (token) {
-      config.headers.Authorazation = 'Bearer ' + token
+      config.headers.Authorization = `Bearer ${token}`
+      // console.log(token)
     }
     return config
   },

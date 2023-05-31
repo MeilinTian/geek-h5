@@ -1,13 +1,13 @@
 @import '../../assets/styles/hairline.scss';
 .root {
-  position: relative;
+  // position: relative;
   display: flex;
   align-items: center;
   height: 46px;
   width: 100%;
   // padding: 0 42px;
   background-color: #fff;
-  @include hairline('bottom', #333);
+  @include hairline('bottom', #ccc);
   // border-bottom: 1px solid #ccc;
   :global {
     .left {

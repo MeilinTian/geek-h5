@@ -12,6 +12,9 @@ export default function reducer(state = initValue, action) {
   if (type === 'login/token') {
     return payload
   }
-  console.log(state)
+  if (type === 'login/logout') {
+    return {}
+  }
+  // console.log(state)
   return state
 }

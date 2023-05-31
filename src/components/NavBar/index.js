@@ -3,20 +3,26 @@ import React from 'react'
 import { useHistory } from 'react-router'
 import Icon from '../Icon'
 import styles from './index.module.scss'
+import classNames from 'classnames'
 
 // history match location: 能拿到的前提条件 ❗️ 这个组件必须是通过路由配置的
 // 方法一：withRouter的使用
 // 方法二：路由提供了几个和路由相关的 hook
 // useHistory, useLoacation, useParams
-function NavBar({ children, extra }) {
+function NavBar({ className, children, extra, onLeftClick }) {
   const history = useHistory()
   const back = () => {
     // 返回上一页
+    if (onLeftClick) {
+      onLeftClick()
+    } else {
+      history.go(-1)
+    }
     // console.log(history)
-    history.go(-1)
+    
   }
   return (
-    <div className={styles.root}>
+    <div className={classNames(styles.root, className)}>
       {/* 顶部工具栏 */}
       {/* 后退按钮 */}
       <div className="left">
