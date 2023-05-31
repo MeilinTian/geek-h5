@@ -1,10 +1,11 @@
 import React from 'react'
 import {
-  BrowserRouter as Router,
+  Router,
   Route,
   Switch,
   Redirect,
 } from 'react-router-dom'
+import history from './utils/history'
 import './App.scss'
 import Login from './pages/Login'
 import Home from './pages/Layout'
@@ -14,7 +15,8 @@ import AuthRoute from './components/AuthRoute'
 
 export default function App() {
   return (
-    <Router>
+    // 注意： BrowserRouter 等价于 Router history={history}
+    <Router history={history}>
       <div className="app">
         <Switch>
           <Redirect exact from="/" to="/home"></Redirect>

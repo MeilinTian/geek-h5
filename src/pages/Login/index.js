@@ -66,10 +66,10 @@ export default function Login() {
       })
       // history.push('/home')
       // 回到首页或之前的页面
-      if (location.from) {
-        history.push(location.from.pathname)
+      if (location.state) {
+        history.replace(location.state.from)
       } else {
-        history.push('/home')
+        history.replace('/home')
       }
     },
   })
