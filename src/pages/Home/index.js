@@ -4,14 +4,17 @@ import styles from './index.module.scss'
 import Tabs from '../../components/Tabs'
 import Icon from '../../components/Icon'
 import { Drawer } from 'antd-mobile-v2'
-import { getUserChannels } from '../../store/actions/home'
+import { getAllChannels, getUserChannels } from '../../store/actions/home'
 import Channels from './components/Channels'
 
 export default function Home() {
   // 渲染频道列表
   const dispatch = useDispatch()
   useEffect(() => {
+    // 获取用户频道
     dispatch(getUserChannels())
+    // 获取所有频道
+    dispatch(getAllChannels())
   }, [dispatch])
   const tabs = useSelector((state) => state.home.userChannels)
 

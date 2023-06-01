@@ -1,6 +1,6 @@
 import request from '../../utils/request'
 import { getLocalChannels, hasToken, setLocalChannels } from '../../utils/storage'
-import { SAVE_CHANNELS } from '../action_types/home'
+import { SAVE_ALL_CHANNELS, SAVE_CHANNELS } from '../action_types/home'
 
 /**
  * 获取用户的频道
@@ -38,6 +38,29 @@ export const getUserChannels = () => {
 export const saveUserChannels = (payload) => {
   return {
     type: SAVE_CHANNELS,
+    payload,
+  }
+}
+
+/**
+ * 获取所有频道
+ * @returns 
+ */
+export const getAllChannels = () => {
+  return async (dispatch) => {
+    const res = await request.get('/channels')
+    dispatch(saveAllChannels(res.data.channels))
+  }
+}
+
+/**
+ * 保存所有频道
+ * @param {*} payload 
+ * @returns 
+ */
+export const saveAllChannels = (payload) => {
+  return {
+    type: SAVE_ALL_CHANNELS,
     payload,
   }
 }

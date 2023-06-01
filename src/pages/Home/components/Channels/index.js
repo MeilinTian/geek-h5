@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux'
 import Icon from '../../../../components/Icon'
 import styles from './index.module.scss'
 
@@ -8,7 +9,20 @@ import styles from './index.module.scss'
  * @param {Function} props.onChannelClick 当点击频道列表中的某个频道时的会带哦函数
  */
 const Channels = ({ tabActiveIndex, onClose, onChannelClick }) => {
-
+  // 用户频道渲染
+  const userChannels = useSelector((state) => state.home.userChannels)
+  // 推荐频道渲染
+  const recommendChannels = useSelector((state) => {
+    const { userChannels, allChannels } = state.home
+    return allChannels.filter((item) => {
+      // 如果这个频道在userChannels中，就不要这个频道
+      if (userChannels.findIndex((v) => v.id === item.id) === -1) {
+        return true
+      } else {
+        return false
+      }
+    })
+  })
   return (
     <div className={styles.root}>
       {/* 顶部栏：带关闭按钮 */}
@@ -22,23 +36,17 @@ const Channels = ({ tabActiveIndex, onClose, onChannelClick }) => {
         <div className="channel-item edit">
           <div className="channel-item-header">
             <span className="channel-item-title">我的频道</span>
-            <span className="channel-item-title-extra">
-              点击删除频道
-            </span>
-            <span className="channel-item-edit">
-              保存
-            </span>
+            <span className="channel-item-title-extra">点击删除频道</span>
+            <span className="channel-item-edit">保存</span>
           </div>
 
           <div className="channel-list">
-            <span className="channel-list-item">
-              频道1
-              <Icon type="iconbtn_tag_close" />
-            </span>
-            <span className="channel-list-item">
-              频道2
-              <Icon type="iconbtn_tag_close" />
-            </span>
+            {userChannels.map((item) => (
+              <span className="channel-list-item" key={item.id}>
+                {item.name}
+                {/* <Icon type="iconbtn_tag_close" /> */}
+              </span>
+            ))}
           </div>
         </div>
 
@@ -49,12 +57,11 @@ const Channels = ({ tabActiveIndex, onClose, onChannelClick }) => {
             <span className="channel-item-title-extra">点击添加频道</span>
           </div>
           <div className="channel-list">
-            <span className="channel-list-item">
-              + 推荐1
-            </span>
-            <span className="channel-list-item">
-              + 推荐2
-            </span>
+            {recommendChannels.map((item) => (
+              <span className="channel-list-item" key={item.id}>
+                + {item.name}
+              </span>
+            ))}
           </div>
         </div>
       </div>
