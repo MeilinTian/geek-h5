@@ -1,4 +1,5 @@
 const TOKEN_KEY = 'geek-itcast'
+const CHANNEL_KEY = 'geek-itcast-channels'
 
 /**
  * 将 Token 信息存入缓存
@@ -30,4 +31,27 @@ export const removeTokenInfo = () => {
  */
 export const hasToken = () => {
   return !!getTokenInfo().token
+}
+
+/**
+ * 保存频道数据到本地
+ * @param {*} channels 
+ */
+export const setLocalChannels = (channels) => {
+  localStorage.setItem(CHANNEL_KEY, JSON.stringify(channels))
+}
+
+/**
+ * 获取本地的频道数据，如果没有数据，不要默认为空数组
+ * @returns 
+ */
+export const getLocalChannels = () => {
+  return JSON.parse(localStorage.getItem(CHANNEL_KEY))
+}
+
+/**
+ * 删除本地地频道数据
+ */
+export const removeLocalChannels = () => {
+  localStorage.removeItem(CHANNEL_KEY)
 }

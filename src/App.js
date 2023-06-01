@@ -12,6 +12,8 @@ import Home from './pages/Layout'
 import ProfileEdit from './pages/Profile/Edit'
 import Chat from './pages/Profile/Chat'
 import AuthRoute from './components/AuthRoute'
+import NotFound from './pages/NotFound'
+import Feedback from './pages/Profile/Feedback'
 
 export default function App() {
   return (
@@ -25,6 +27,9 @@ export default function App() {
           {/* 需要登录才能访问 */}
           <AuthRoute path="/profile/edit" component={ProfileEdit}></AuthRoute>
           <AuthRoute path="/profile/chat" component={Chat}></AuthRoute>
+          <AuthRoute path="/profile/feedback" component={Feedback}></AuthRoute>
+          {/* 404 */}
+          <Route component={NotFound}></Route>
         </Switch>
       </div>
     </Router>
