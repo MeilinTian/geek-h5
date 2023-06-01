@@ -13,7 +13,7 @@ const Tabs = ({ index = 0, tabs = [], children, onChange }) => {
 
   const changeTab = (index) => {
     setActiveIndex(index)
-    // onChange(index)
+    onChange(index)
   }
 
   // https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html
@@ -26,7 +26,7 @@ const Tabs = ({ index = 0, tabs = [], children, onChange }) => {
     // TODO: 清理上一次的 animate
 
     const activeTab = navRef.current.children[activeIndex]
-
+    if (!activeTab) return
     const activeTabWidth = activeTab.offsetWidth || 60
     // 注意：第一次获取 offsetLeft 值为 0 ，以后每次获取为 8
     //      所以，设置默认值 8，让所有情况下 offsetLeft 值都相同
@@ -64,9 +64,9 @@ const Tabs = ({ index = 0, tabs = [], children, onChange }) => {
       <div className="tabs">
         <div className="tabs-wrap">
           <div className="tabs-nav" ref={navRef}>
-            {tabs.map((item) => (
+            {tabs.map((item, i) => (
               <div
-                className={classnames('tab', item.id === activeIndex ? 'active' : '')}
+                className={classnames('tab', i === activeIndex ? 'active' : '')}
                 key={item.id}
                 onClick={() => changeTab(item.id)}
               >

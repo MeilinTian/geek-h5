@@ -18,6 +18,9 @@ export default function Home() {
   }, [dispatch])
   const tabs = useSelector((state) => state.home.userChannels)
 
+  // 控制高亮
+  const [active, setActive] = useState(0)
+
   // 控制 drawer 组件
   const [open, setOpen] = useState(false)
   // 关闭 drawer
@@ -27,7 +30,15 @@ export default function Home() {
 
   return (
     <div className={styles.root}>
-      <Tabs tabs={tabs}></Tabs>
+      {/* 顶部切换栏 */}
+      <Tabs
+        tabs={tabs}
+        index={active}
+        onChange={(e) => {
+          setActive(e)
+          // console.log(e)
+        }}
+      ></Tabs>
       {/* 频道 Tab 栏右侧的两个图标按钮：搜索、频道管理 */}
       <div className="tabs-opration">
         <Icon type="iconbtn_search" />
@@ -40,11 +51,15 @@ export default function Home() {
         open={true}
         sidebar={
           open && (
-            <Channels onClose={onClose}></Channels>
+            <Channels
+              onClose={onClose}
+              index={active}
+              onChange={(e) => setActive(e)}
+            ></Channels>
           )
         }
         className="my-drawer"
-        stype={{height: document.documentElement.clientHeight}}
+        stype={{ height: document.documentElement.clientHeight }}
       ></Drawer>
     </div>
   )
