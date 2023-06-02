@@ -3,7 +3,7 @@ import Icon from '../../../../components/Icon'
 import classnames from 'classnames'
 import styles from './index.module.scss'
 import { useState } from 'react'
-import { delChannel } from '../../../../store/actions/home'
+import { addChannel, delChannel } from '../../../../store/actions/home'
 import { Toast } from 'antd-mobile'
 
 /**
@@ -37,10 +37,10 @@ const Channels = ({ index, onClose, onChange }) => {
     onClose()
   }
 
-  // 编辑按钮切换黄台
+  // 编辑按钮切换事件
   const [editing, setEditing] = useState(false)
 
-  // 删除事件
+  // 删除频道
   const dispatch = useDispatch()
   const del = (channel, i) => {
     if (userChannels.length <= 4) {
@@ -59,6 +59,12 @@ const Channels = ({ index, onClose, onChange }) => {
     } else {
       onChange(i)
     }
+  }
+
+  // 添加频道
+  const add = async (channel) => {
+    await dispatch(addChannel(channel))
+    Toast.show({ icon: 'success', content: '添加成功' })
   }
 
   return (
@@ -118,8 +124,12 @@ const Channels = ({ index, onClose, onChange }) => {
           </div>
           <div className="channel-list">
             {recommendChannels.map((item) => (
-              <span className="channel-list-item" key={item.id}>
-                + {item.name}
+              <span
+                className="channel-list-item"
+                key={item.id}
+                onClick={() => add(item)}
+              >
+                {item.name}
               </span>
             ))}
           </div>

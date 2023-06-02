@@ -1,10 +1,14 @@
 import request from '../../utils/request'
-import { getLocalChannels, hasToken, setLocalChannels } from '../../utils/storage'
+import {
+  getLocalChannels,
+  hasToken,
+  setLocalChannels,
+} from '../../utils/storage'
 import { SAVE_ALL_CHANNELS, SAVE_CHANNELS } from '../action_types/home'
 
 /**
  * 获取用户的频道
- * @returns 
+ * @returns
  */
 export const getUserChannels = () => {
   return async (dispatch) => {
@@ -26,14 +30,13 @@ export const getUserChannels = () => {
         setLocalChannels(res.data.channels)
       }
     }
-    
   }
 }
 
 /**
  * 保存用户频道到 redux 中
- * @param {*} payload 
- * @returns 
+ * @param {*} payload
+ * @returns
  */
 export const saveUserChannels = (payload) => {
   return {
@@ -44,7 +47,7 @@ export const saveUserChannels = (payload) => {
 
 /**
  * 获取所有频道
- * @returns 
+ * @returns
  */
 export const getAllChannels = () => {
   return async (dispatch) => {
@@ -55,8 +58,8 @@ export const getAllChannels = () => {
 
 /**
  * 保存所有频道
- * @param {*} payload 
- * @returns 
+ * @param {*} payload
+ * @returns
  */
 export const saveAllChannels = (payload) => {
   return {
@@ -65,7 +68,11 @@ export const saveAllChannels = (payload) => {
   }
 }
 
-
+/**
+ * 删除频道
+ * @param {*} channel
+ * @returns
+ */
 export const delChannel = (channel) => {
   // 如果用户登录，需要发送请求删除频道
   // 如果用户没登录，需要删除本地中的这个频道
@@ -86,6 +93,23 @@ export const delChannel = (channel) => {
       const result = userChannels.filter((item) => item.id !== channel.id)
       dispatch(saveUserChannels(result))
       setLocalChannels(result)
+    }
+  }
+}
+
+export const addChannel = (channel) => {
+  return async (dispatch, getState) => {
+    // 之前的channels
+    const channels = [...getState().home.userChannels, channel]
+    if (hasToken()) {
+      // 发请求添加
+      await request.patch('/user/channels', {
+        channels: [{ id: channel.id }],
+      })
+      dispatch(saveUserChannels(channels))
+    } else {
+      dispatch(saveUserChannels(channels))
+      setLocalChannels(channels)
     }
   }
 }
