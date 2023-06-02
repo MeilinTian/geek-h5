@@ -64,3 +64,28 @@ export const saveAllChannels = (payload) => {
     payload,
   }
 }
+
+
+export const delChannel = (channel) => {
+  // 如果用户登录，需要发送请求删除频道
+  // 如果用户没登录，需要删除本地中的这个频道
+  // 不管登录还是没有登录，都需要修改 redux 中的频道
+  return async (dispatch, getState) => {
+    // 之前的channels
+    const userChannels = getState().home.userChannels
+    if (hasToken()) {
+      // 发送请求
+      await request.delete('/user/channels/' + channel.id)
+      // 同步频道的数据到 redux 中
+      dispatch(
+        saveUserChannels(userChannels.filter((item) => item.id !== channel.id))
+      )
+    } else {
+      // 没有登录
+      // 修改本地，修改 redux
+      const result = userChannels.filter((item) => item.id !== channel.id)
+      dispatch(saveUserChannels(result))
+      setLocalChannels(result)
+    }
+  }
+}

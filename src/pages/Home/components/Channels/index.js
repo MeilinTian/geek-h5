@@ -1,7 +1,10 @@
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Icon from '../../../../components/Icon'
 import classnames from 'classnames'
 import styles from './index.module.scss'
+import { useState } from 'react'
+import { delChannel } from '../../../../store/actions/home'
+import { Toast } from 'antd-mobile'
 
 /**
  * 频道管理组件
@@ -28,9 +31,36 @@ const Channels = ({ index, onClose, onChange }) => {
 
   // 切换频道
   const changeChannel = (i) => {
+    // 如果是编辑状态，不允许跳转
+    if (editing) return
     onChange(i)
     onClose()
   }
+
+  // 编辑按钮切换黄台
+  const [editing, setEditing] = useState(false)
+
+  // 删除事件
+  const dispatch = useDispatch()
+  const del = (channel, i) => {
+    if (userChannels.length <= 4) {
+      Toast.show({ icon: 'fail', content: '至少保留4个频道' })
+      return
+    }
+    dispatch(delChannel(channel))
+    // 高亮处理
+    // 1. 如果删除的 i 和 index 相等，默认让推荐 0 高亮
+    // 2. 如果删除的 i 小于 index，默认让 i - 1 高亮
+    // 3. 如果删除的 i 大于 index，不用处理
+    if (i < index) {
+      onChange(i - 1)
+    } else if (i === index) {
+      onChange(0)
+    } else {
+      onChange(i)
+    }
+  }
+
   return (
     <div className={styles.root}>
       {/* 顶部栏：带关闭按钮 */}
@@ -41,11 +71,24 @@ const Channels = ({ index, onClose, onChange }) => {
       {/* 频道列表 */}
       <div className="channel-content">
         {/* 当前已选择的频道列表 */}
-        <div className="channel-item edit">
+        <div
+          className={classnames('channel-item', {
+            edit: editing,
+          })}
+        >
           <div className="channel-item-header">
             <span className="channel-item-title">我的频道</span>
-            <span className="channel-item-title-extra">点击删除频道</span>
-            <span className="channel-item-edit">保存</span>
+            <span className="channel-item-title-extra">
+              {editing ? '点击删除频道' : '点击进入频道'}
+            </span>
+            <span
+              className="channel-item-edit"
+              onClick={() => {
+                setEditing(!editing)
+              }}
+            >
+              {editing ? '完成' : '编辑'}
+            </span>
           </div>
 
           <div className="channel-list">
@@ -58,7 +101,10 @@ const Channels = ({ index, onClose, onChange }) => {
                 onClick={() => changeChannel(i)}
               >
                 {item.name}
-                {/* <Icon type="iconbtn_tag_close" /> */}
+                {/* 推荐不允许删除 */}
+                {item.id !== 0 && (
+                  <Icon type="iconbtn_tag_close" onClick={() => del(item, i)} />
+                )}
               </span>
             ))}
           </div>
