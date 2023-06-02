@@ -4,7 +4,7 @@ import {
   hasToken,
   setLocalChannels,
 } from '../../utils/storage'
-import { SAVE_ALL_CHANNELS, SAVE_CHANNELS } from '../action_types/home'
+import { SAVE_ALL_CHANNELS, SAVE_ARTICLE_LIST, SAVE_CHANNELS } from '../action_types/home'
 
 /**
  * 获取用户的频道
@@ -86,7 +86,7 @@ export const delChannel = (channel) => {
       // 同步频道的数据到 redux 中
       dispatch(
         saveUserChannels(userChannels.filter((item) => item.id !== channel.id))
-      )
+      ) 
     } else {
       // 没有登录
       // 修改本地，修改 redux
@@ -97,6 +97,11 @@ export const delChannel = (channel) => {
   }
 }
 
+/**
+ * 添加频道
+ * @param {*} channel 
+ * @returns 
+ */
 export const addChannel = (channel) => {
   return async (dispatch, getState) => {
     // 之前的channels
@@ -111,5 +116,37 @@ export const addChannel = (channel) => {
       dispatch(saveUserChannels(channels))
       setLocalChannels(channels)
     }
+  }
+}
+
+/**
+ * 获取文章列表数据
+ */
+export const getArticleList = (channelId, timestamp, loadMore = false) => {
+  return async (dispatch) => {
+    const res = await request({
+      method: 'get',
+      url: '/articles',
+      params: {
+        timestamp: timestamp,
+        channel_id: channelId,
+      },
+    })
+    dispatch(saveArticleList({
+      channelId,
+      timestamp: res.data.pre_timestamp,
+      list: res.data.results,
+      loadMore,
+    }))
+  }
+}
+
+/**
+ * 保存文章列表数据
+ */
+export const saveArticleList = (payload) => {
+  return {
+    type: SAVE_ARTICLE_LIST,
+    payload,
   }
 }

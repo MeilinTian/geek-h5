@@ -1,8 +1,9 @@
-import { SAVE_ALL_CHANNELS, SAVE_CHANNELS } from "../action_types/home"
+import { SAVE_ALL_CHANNELS, SAVE_ARTICLE_LIST, SAVE_CHANNELS } from "../action_types/home"
 
 let initValue = {
   userChannels: [],
   allChannels: [],
+  articles: {},
 }
 
 export default function reducer (state = initValue, action) {
@@ -17,6 +18,19 @@ export default function reducer (state = initValue, action) {
     return {
       ...state,
       allChannels: payload,
+    }
+  }
+  if (type === SAVE_ARTICLE_LIST) {
+    const {list, timestamp, loadMore, channelId}  = payload
+    return {
+      ...state,
+      articles: {
+        ...state.articles,
+        [channelId]: {
+          timestamp: timestamp,
+          list: loadMore ? [...state.articles[channelId].list, ...list] : list,
+        }
+      }
     }
   }
   return state

@@ -5,6 +5,10 @@
   position: relative;
 
   :global {
+    .tab-content-wrap {
+      height: 100%;
+      overflow-y: scroll;
+    }
     // .am-tabs-default-bar-nextpage {
     //   background: transparent;
     // }
@@ -39,7 +43,7 @@
     }
 
     .tabs-opration {
-      position: absolute;
+      position: fixed;
       top: 0;
       right: 0;
       z-index: 1;

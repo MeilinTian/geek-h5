@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import styles from './index.module.scss'
 import Tabs from '../../components/Tabs'
 import Icon from '../../components/Icon'
+import ArticleList from './components/ArticleList'
 import { Drawer } from 'antd-mobile-v2'
 import { getAllChannels, getUserChannels } from '../../store/actions/home'
 import Channels from './components/Channels'
@@ -36,9 +37,16 @@ export default function Home() {
         index={active}
         onChange={(e) => {
           setActive(e)
-          // console.log(e)
         }}
-      ></Tabs>
+      >
+        {tabs.map((item) => (
+          <ArticleList
+            key={item.id}
+            channelId={item.id}
+            activeId={tabs[active].id}
+          />
+        ))}
+      </Tabs>
       {/* 频道 Tab 栏右侧的两个图标按钮：搜索、频道管理 */}
       <div className="tabs-opration">
         <Icon type="iconbtn_search" />
