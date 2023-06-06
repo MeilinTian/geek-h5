@@ -4,7 +4,6 @@ import { Toast } from 'antd-mobile'
 import { getTokenInfo, setTokenInfo } from './storage'
 import store from '../store'
 import { logout, saveToken } from '../store/actions/login'
-// import { config } from 'antd-mobile/es/components/toast/methods'
 
 const baseURL = 'http://geek.itheima.net/v1_0/'
 const instance = axios.create({
