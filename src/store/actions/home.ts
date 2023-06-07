@@ -1,16 +1,23 @@
+// import { Dispatch } from 'redux'
 import request from '../../utils/request'
 import {
   getLocalChannels,
   hasToken,
   setLocalChannels,
 } from '../../utils/storage'
-import { SAVE_ALL_CHANNELS, SAVE_ARTICLE_LIST, SAVE_CHANNELS } from '../action_types/home'
+import { Channel, HomeAction, ArticlePayload } from '../reducers/home'
+// import {
+//   SAVE_ALL_CHANNELS,
+//   SAVE_ARTICLE_LIST,
+//   SAVE_CHANNELS,
+// } from '../action_types/home'
+import { RootThunkAction } from '..'
 
 /**
  * 获取用户的频道
  * @returns
  */
-export const getUserChannels = () => {
+export const getUserChannels = (): RootThunkAction => {
   return async (dispatch) => {
     // 1. 判断用户是否登录
     if (hasToken()) {
@@ -38,9 +45,9 @@ export const getUserChannels = () => {
  * @param {*} payload
  * @returns
  */
-export const saveUserChannels = (payload) => {
+export const saveUserChannels = (payload: Channel[]): HomeAction => {
   return {
-    type: SAVE_CHANNELS,
+    type: 'home/saveChannels',
     payload,
   }
 }
@@ -49,7 +56,7 @@ export const saveUserChannels = (payload) => {
  * 获取所有频道
  * @returns
  */
-export const getAllChannels = () => {
+export const getAllChannels = (): RootThunkAction => {
   return async (dispatch) => {
     const res = await request.get('/channels')
     dispatch(saveAllChannels(res.data.channels))
@@ -61,9 +68,9 @@ export const getAllChannels = () => {
  * @param {*} payload
  * @returns
  */
-export const saveAllChannels = (payload) => {
+export const saveAllChannels = (payload: Channel[]): HomeAction => {
   return {
-    type: SAVE_ALL_CHANNELS,
+    type: 'home/saveAllChannels',
     payload,
   }
 }
@@ -73,7 +80,7 @@ export const saveAllChannels = (payload) => {
  * @param {*} channel
  * @returns
  */
-export const delChannel = (channel) => {
+export const delChannel = (channel: Channel): RootThunkAction => {
   // 如果用户登录，需要发送请求删除频道
   // 如果用户没登录，需要删除本地中的这个频道
   // 不管登录还是没有登录，都需要修改 redux 中的频道
@@ -86,7 +93,7 @@ export const delChannel = (channel) => {
       // 同步频道的数据到 redux 中
       dispatch(
         saveUserChannels(userChannels.filter((item) => item.id !== channel.id))
-      ) 
+      )
     } else {
       // 没有登录
       // 修改本地，修改 redux
@@ -99,10 +106,10 @@ export const delChannel = (channel) => {
 
 /**
  * 添加频道
- * @param {*} channel 
- * @returns 
+ * @param {*} channel
+ * @returns
  */
-export const addChannel = (channel) => {
+export const addChannel = (channel: Channel): RootThunkAction => {
   return async (dispatch, getState) => {
     // 之前的channels
     const channels = [...getState().home.userChannels, channel]
@@ -122,7 +129,11 @@ export const addChannel = (channel) => {
 /**
  * 获取文章列表数据
  */
-export const getArticleList = (channelId, timestamp, loadMore = false) => {
+export const getArticleList = (
+  channelId: number,
+  timestamp: string,
+  loadMore = false
+): RootThunkAction => {
   return async (dispatch) => {
     const res = await request({
       method: 'get',
@@ -132,21 +143,23 @@ export const getArticleList = (channelId, timestamp, loadMore = false) => {
         channel_id: channelId,
       },
     })
-    dispatch(saveArticleList({
-      channelId,
-      timestamp: res.data.pre_timestamp,
-      list: res.data.results,
-      loadMore,
-    }))
+    dispatch(
+      saveArticleList({
+        channelId,
+        timestamp: res.data.pre_timestamp,
+        list: res.data.results,
+        loadMore,
+      })
+    )
   }
 }
 
 /**
  * 保存文章列表数据
  */
-export const saveArticleList = (payload) => {
+export const saveArticleList = (payload: ArticlePayload): HomeAction => {
   return {
-    type: SAVE_ARTICLE_LIST,
+    type: 'home/saveArticleList',
     payload,
   }
 }

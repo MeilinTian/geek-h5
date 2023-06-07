@@ -7,17 +7,20 @@ import ArticleList from './components/ArticleList'
 import { Drawer } from 'antd-mobile-v2'
 import { getAllChannels, getUserChannels } from '../../store/actions/home'
 import Channels from './components/Channels'
+import { RootState } from '@/store'
+import { useHistory } from 'react-router'
 
 export default function Home() {
   // 渲染频道列表
-  const dispatch = useDispatch()
+  const dispatch: any = useDispatch()
+  const history = useHistory()
   useEffect(() => {
     // 获取用户频道
     dispatch(getUserChannels())
     // 获取所有频道
     dispatch(getAllChannels())
   }, [dispatch])
-  const tabs = useSelector((state) => state.home.userChannels)
+  const tabs = useSelector((state: RootState) => state.home.userChannels)
 
   // 控制高亮
   const [active, setActive] = useState(0)
@@ -35,7 +38,7 @@ export default function Home() {
       <Tabs
         tabs={tabs}
         index={active}
-        onChange={(e) => {
+        onChange={(e: number) => {
           setActive(e)
         }}
       >
@@ -49,13 +52,13 @@ export default function Home() {
       </Tabs>
       {/* 频道 Tab 栏右侧的两个图标按钮：搜索、频道管理 */}
       <div className="tabs-opration">
-        <Icon type="iconbtn_search" />
+        <Icon type="iconbtn_search" onClick={() => history.push('/search')} />
         <Icon type="iconbtn_channel" onClick={() => setOpen(true)} />
       </div>
       {/* 频道组件管理 */}
       <Drawer
         position="left"
-        children={''}
+        // children={''}
         open={true}
         sidebar={
           open && (
@@ -67,7 +70,7 @@ export default function Home() {
           )
         }
         className="my-drawer"
-        stype={{ height: document.documentElement.clientHeight }}
+        style={{ height: document.documentElement.clientHeight }}
       ></Drawer>
     </div>
   )

@@ -5,6 +5,8 @@ import styles from './index.module.scss'
 import { useState } from 'react'
 import { addChannel, delChannel } from '../../../../store/actions/home'
 import { Toast } from 'antd-mobile'
+import { RootState } from '@/store'
+import { Channel } from '@/store/reducers/home'
 
 /**
  * 频道管理组件
@@ -12,16 +14,22 @@ import { Toast } from 'antd-mobile'
  * @param {Function} props.onClose 关闭频道管理抽屉时的回调函数
  * @param {Function} props.onChannelClick 当点击频道列表中的某个频道时的会带哦函数
  */
-const Channels = ({ index, onClose, onChange }) => {
+
+type Props = {
+  index: number 
+  onClose: () => void 
+  onChange: (i: number) => void
+}
+const Channels = ({ index, onClose, onChange }: Props) => {
   // console.log(index)
   // 用户频道渲染
-  const userChannels = useSelector((state) => state.home.userChannels)
+  const userChannels = useSelector((state: RootState) => state.home.userChannels)
   // 推荐频道渲染
-  const recommendChannels = useSelector((state) => {
+  const recommendChannels = useSelector((state: RootState) => {
     const { userChannels, allChannels } = state.home
-    return allChannels.filter((item) => {
+    return allChannels.filter((item: any) => {
       // 如果这个频道在userChannels中，就不要这个频道
-      if (userChannels.findIndex((v) => v.id === item.id) === -1) {
+      if (userChannels.findIndex((v: any) => v.id === item.id) === -1) {
         return true
       } else {
         return false
@@ -30,7 +38,7 @@ const Channels = ({ index, onClose, onChange }) => {
   })
 
   // 切换频道
-  const changeChannel = (i) => {
+  const changeChannel = (i: number) => {
     // 如果是编辑状态，不允许跳转
     if (editing) return
     onChange(i)
@@ -41,8 +49,8 @@ const Channels = ({ index, onClose, onChange }) => {
   const [editing, setEditing] = useState(false)
 
   // 删除频道
-  const dispatch = useDispatch()
-  const del = (channel, i) => {
+  const dispatch: any = useDispatch()
+  const del = (channel: any, i: number) => {
     if (userChannels.length <= 4) {
       Toast.show({ icon: 'fail', content: '至少保留4个频道' })
       return
@@ -62,7 +70,7 @@ const Channels = ({ index, onClose, onChange }) => {
   }
 
   // 添加频道
-  const add = async (channel) => {
+  const add = async (channel: Channel) => {
     await dispatch(addChannel(channel))
     Toast.show({ icon: 'success', content: '添加成功' })
   }

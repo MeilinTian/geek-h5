@@ -4,14 +4,22 @@ import ArticleItem from '../ArticleItem'
 import { PullToRefresh, InfiniteScroll } from 'antd-mobile'
 import { useDispatch, useSelector } from 'react-redux'
 import { getArticleList } from '../../../../store/actions/home'
+import { RootAction, RootState, RootThunkAction } from '@/store'
 
-export default function ArticleList({ channelId, activeId }) {
+type Props = {
+  channelId: number
+  activeId: number
+}
+
+export default function ArticleList({ channelId, activeId }: Props) {
   // 是否有更多数据
   const [hasMore, setHasMore] = useState(true)
   // 代表是否正在加载数据
   const [loading, setLoading] = useState(false)
   const loadMore = async () => {
-    if (loading) { return }
+    if (loading) {
+      return
+    }
     setLoading(true)
     if (!current.timestamp) {
       setHasMore(false)
@@ -23,13 +31,13 @@ export default function ArticleList({ channelId, activeId }) {
       setLoading(false)
     }
   }
-  const dispatch = useDispatch()
-  const current = useSelector((state) => state.home.articles[channelId])
+  const dispatch: any = useDispatch()
+  const current = useSelector((state: RootState) => state.home.articles[channelId])
   useEffect(() => {
     // 如果该频道有文章数据，没必要一进来就发送请求
     if (current) return
     if (channelId === activeId) {
-      dispatch(getArticleList(channelId, Date.now()))
+      dispatch(getArticleList(channelId, Date.now() + ''))
     }
   }, [channelId, activeId, dispatch, current])
 
@@ -41,10 +49,12 @@ export default function ArticleList({ channelId, activeId }) {
   return (
     <div className={styles.root}>
       <div className="articles">
-        <PullToRefresh onRefresh={async () => {
-          setHasMore(true)
-          await dispatch(getArticleList(channelId, Date.now()))
-        }}>
+        <PullToRefresh
+          onRefresh={async () => {
+            setHasMore(true)
+            await dispatch(getArticleList(channelId, Date.now() + ''))
+          }}
+        >
           {list.map((item) => (
             <div className="article-item" key={item.art_id}>
               <ArticleItem article={item}></ArticleItem>

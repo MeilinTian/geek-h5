@@ -1,3 +1,5 @@
+// import { User } from '@/store/reducers/profile'
+import { RootState } from '@/store'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
@@ -7,8 +9,8 @@ import styles from './index.module.scss'
 
 export default function Profile() {
   const history = useHistory()
-  const dispatch = useDispatch()
-  const user = useSelector(state => state.profile.user)
+  const dispatch: any = useDispatch()
+  const user = useSelector((state: RootState) => state.profile.user)
   // 页面一进入，就需要发送请求，获取用户信息
   useEffect(() => {
     dispatch(getUser())
@@ -75,11 +77,17 @@ export default function Profile() {
       <div className="more-service">
         <h3>更多服务</h3>
         <div className="service-list">
-          <div className="service-item" onClick={() => history.push('/profile/feedback')}>
+          <div
+            className="service-item"
+            onClick={() => history.push('/profile/feedback')}
+          >
             <Icon type="iconbtn_feedback"></Icon>
             <div>用户反馈</div>
           </div>
-          <div className="service-item" onClick={() => history.push('/profile/chat')}>
+          <div
+            className="service-item"
+            onClick={() => history.push('/profile/chat')}
+          >
             <Icon type="iconbtn_xiaozhitongxue"></Icon>
             <div>小智同学</div>
           </div>

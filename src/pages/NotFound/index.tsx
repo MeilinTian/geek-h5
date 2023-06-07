@@ -6,13 +6,13 @@ export default function NotFound() {
   const history = useHistory()
   const timeRef = useRef(-1)
   useEffect(() => {
-    let timer = setInterval(() => {
+    let timer = window.setInterval(() => {
       setTime((time) => {
         timeRef.current = time - 1
         return time - 1
       })
       if (timeRef.current === 1) {
-        clearInterval(timer)
+        window.clearInterval(timer)
         history.push('/home')
       }
     }, 1000)

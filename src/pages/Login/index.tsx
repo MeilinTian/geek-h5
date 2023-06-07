@@ -13,8 +13,8 @@ import { useHistory, useLocation } from 'react-router'
 
 export default function Login() {
   const history = useHistory()
-  const location = useLocation()
-  const dispatch = useDispatch()
+  const location = useLocation<{ from: string }>()
+  const dispatch: any = useDispatch()
   const [time, setTime] = useState(0)
   const onExtraClick = async () => {
     if (time > 0) return

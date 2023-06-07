@@ -2,9 +2,16 @@ import classNames from 'classnames'
 import React, { useState } from 'react'
 import styles from './index.module.scss'
 
-export default function Textarea({ maxLength, className, ...rest }) {
+interface Props extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+  maxLength?: number
+  className?: string
+  value?: string
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
+}
+
+export default function Textarea({ maxLength, className, ...rest }: Props) {
   const [value, setValue] = useState(rest.value || '')
-  const onChange = (e) => {
+  const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value)
     rest.onChange && rest.onChange(e)
   }
