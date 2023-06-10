@@ -1,5 +1,6 @@
 const TOKEN_KEY = 'geek-itcast'
 const CHANNEL_KEY = 'geek-itcast-channels'
+const SEARCH_KEY = 'geek-itcast-search'
 
 type Token = {
   token: string
@@ -8,7 +9,7 @@ type Token = {
 
 type Channels = {
   id: number
-  name: string 
+  name: string
 }[]
 
 /**
@@ -46,7 +47,7 @@ export const hasToken = () => {
 
 /**
  * 保存频道数据到本地
- * @param {*} channels 
+ * @param {*} channels
  */
 export const setLocalChannels = (channels: Channels) => {
   localStorage.setItem(CHANNEL_KEY, JSON.stringify(channels))
@@ -54,7 +55,7 @@ export const setLocalChannels = (channels: Channels) => {
 
 /**
  * 获取本地的频道数据，如果没有数据，不要默认为空数组
- * @returns 
+ * @returns
  */
 export const getLocalChannels = (): Channels => {
   return JSON.parse(localStorage.getItem(CHANNEL_KEY)!)
@@ -65,4 +66,27 @@ export const getLocalChannels = (): Channels => {
  */
 export const removeLocalChannels = () => {
   localStorage.removeItem(CHANNEL_KEY)
+}
+
+/**
+ * 从缓存获取搜索历史关键字
+ * @returns
+ */
+export const getLocalHistories = () => {
+  return JSON.parse(localStorage.getItem(SEARCH_KEY)!) || []
+}
+
+/**
+ * 将搜索历史关键字存入本地
+ * @param histories
+ */
+export const setLocalHistories = (histories: string[]) => {
+  localStorage.setItem(SEARCH_KEY, JSON.stringify(histories))
+}
+
+/**
+ * 删除本地缓存中的搜索关键字
+ */
+export const removeLocalHistories = () => {
+  localStorage.removeItem(SEARCH_KEY)
 }

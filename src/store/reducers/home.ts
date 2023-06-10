@@ -9,7 +9,7 @@ export type Channel = {
   name: string
 }
 
-type Article = {
+export type Article = {
   art_id: string
   title: string
   aut_id: string

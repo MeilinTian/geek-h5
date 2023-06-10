@@ -6,7 +6,7 @@ import classNames from 'classnames'
 import { ReactElement } from 'react'
 
 type Props = {
-  children: string | ReactElement
+  children?: string | ReactElement
   extra?: string | ReactElement
   className?: string
   onLeftClick?: () => void
