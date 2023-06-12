@@ -1,10 +1,10 @@
-import { Dispatch } from 'redux'
-import store from '..'
+// import { Dispatch } from 'redux'
+// import store from '..'
 import request from '../../utils/request'
 import { setTokenInfo } from '../../utils/storage'
 import { LoginAction } from '../reducers/login'
 import { RootThunkAction } from '..'
-import { Root } from 'react-dom/client'
+// import { Root } from 'react-dom/client'
 
 const sendCode = (mobile: string): RootThunkAction => {
   return async (dispatch) => {

@@ -1,8 +1,8 @@
 import request from '../../utils/request'
 // import { SAVE_PROFILE, SAVE_USER } from '../action_types/profile'
 import { User, Profile, ProfileAction } from '../reducers/profile'
-import { Dispatch } from 'redux'
-import { RootState, RootThunkAction } from '..'
+// import { Dispatch } from 'redux'
+import { RootThunkAction } from '..'
 
 /**
  * 保存用户信息

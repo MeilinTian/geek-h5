@@ -1,7 +1,7 @@
 import { removeLocalHistories, setLocalHistories } from '../../utils/storage'
 import { RootThunkAction } from '..'
 import request from '../../utils/request'
-import { Article } from '../reducers/home'
+// import { Article } from '../reducers/home'
 import { SearchAction } from '../reducers/search'
 
 /**

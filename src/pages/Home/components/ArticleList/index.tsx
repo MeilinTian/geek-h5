@@ -4,7 +4,7 @@ import ArticleItem from '../ArticleItem'
 import { PullToRefresh, InfiniteScroll } from 'antd-mobile'
 import { useDispatch, useSelector } from 'react-redux'
 import { getArticleList } from '../../../../store/actions/home'
-import { RootAction, RootState, RootThunkAction } from '@/store'
+import {  RootState } from '@/store'
 
 type Props = {
   channelId: number
